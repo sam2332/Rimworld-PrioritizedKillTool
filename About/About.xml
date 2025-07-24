@@ -7,32 +7,45 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Replaces the vanilla "Kill" dev tool with an intelligent version that only kills the single most relevant object under the mouse cursor.
+  <description>
+  A smart replacement for RimWorld's vanilla "Kill" debug tool that intelligently prioritizes targets instead of killing everything indiscriminately.
 
-Kill priority (highest to lowest):
-• Hostile pawns (raiders, manhunters, etc.)
-• Mechanoids (hostile or inactive)
-• Wild animals (especially manhunters)
-• Items (weapons, apparel, resources)
-• Buildings (turrets, doors, furniture)
-• Corpses
-• Filth, plants, debris
-• Colonists &amp; player-owned pawns (absolute last priority)
+🎯 INTELLIGENT TARGETING
+Instead of destroying everything under your cursor, this mod kills only the most relevant target based on a logical priority system. Perfect for developers and modders who need precision control.
 
-Features:
-- Only one thing killed per click (or radius mode for multiple)
-- Follows strict priority, ignoring draw order
-- Skips colonists unless nothing else is present
-- Optional log messages showing what was killed
-- Comprehensive mod settings for customization
-- Toggle individual target types on/off
-- Radius mode for area-of-effect killing
-- Distance-based prioritization options
-- Updated tooltip: "Kills only the most relevant object under the mouse — enemies first, colonists last."
+⚡ PRIORITY SYSTEM (Highest → Lowest)
+1. Hostile Pawns - Raiders, manhunters, hostile faction members
+2. Mechanoids - Both active and dormant mechanoids
+3. Wild Animals - Including manhunters and aggressive wildlife  
+4. Items - Weapons, apparel, resources, dropped goods
+5. Buildings - Structures, furniture, doors, turrets
+6. Corpses - Dead bodies and remains
+7. Environmental - Filth, plants, debris, neutral objects
+8. Friendlies - Colonists and tamed animals (safety last)
 
-Configuration:
-Access mod settings through Options → Mod Settings → Prioritized Kill Tool to customize behavior, enable/disable target types, and configure radius mode.</description>
-  <packageId>ProgrammerLily.PrioritizedKillTool</packageId>
+🛠️ POWERFUL FEATURES
+• Smart single-target mode (default) or configurable radius mode
+• Comprehensive mod settings with individual target type toggles
+• Distance-based prioritization when priorities match
+• Optional debug logging to see what was killed and why
+• Safety-first design: colonists only targeted if nothing else available
+• Real-time settings changes (no restart required)
+• Maintains all original debug tool permissions
+
+⚙️ CUSTOMIZATION OPTIONS
+Access full configuration through: Options → Mod Settings → Prioritized Kill Tool
+• Enable/disable any of the 8 target categories
+• Toggle between single-target and area-effect modes
+• Adjust kill radius from 0.5 to 10 tiles
+• Configure distance prioritization preferences
+• Control debug message visibility
+• One-click reset to safe defaults
+
+🔧 DEVELOPER FRIENDLY
+Perfect for mod testing, map cleanup, and precise debugging. Saves time by eliminating the need to manually select specific targets in crowded scenes while maintaining the safety and power of the original tool.
+
+Compatible with all other mods. No performance impact during normal gameplay.
+</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>
