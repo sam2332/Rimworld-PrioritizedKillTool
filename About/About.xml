@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>[PL] Prioritized Kill Dev Tool</name>
+  <packageId>PrioritizedKillTool.ProgrammerLily.com</packageId>
+  <author>ProgrammerLily</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces the vanilla "Kill" dev tool with an intelligent version that only kills the single most relevant object under the mouse cursor.
+
+Kill priority (highest to lowest):
+• Hostile pawns (raiders, manhunters, etc.)
+• Mechanoids (hostile or inactive)
+• Wild animals (especially manhunters)
+• Items (weapons, apparel, resources)
+• Buildings (turrets, doors, furniture)
+• Corpses
+• Filth, plants, debris
+• Colonists &amp; player-owned pawns (absolute last priority)
+
+Features:
+- Only one thing killed per click (or radius mode for multiple)
+- Follows strict priority, ignoring draw order
+- Skips colonists unless nothing else is present
+- Optional log messages showing what was killed
+- Comprehensive mod settings for customization
+- Toggle individual target types on/off
+- Radius mode for area-of-effect killing
+- Distance-based prioritization options
+- Updated tooltip: "Kills only the most relevant object under the mouse — enemies first, colonists last."
+
+Configuration:
+Access mod settings through Options → Mod Settings → Prioritized Kill Tool to customize behavior, enable/disable target types, and configure radius mode.</description>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+  </loadAfter>
+  <modVersion>1.0.0</modVersion>
+</ModMetaData>
