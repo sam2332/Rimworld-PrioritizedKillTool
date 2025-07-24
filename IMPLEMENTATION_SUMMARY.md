@@ -22,21 +22,34 @@ The mod uses `Selector.SelectableObjectsAt()` to get all valid targets at the mo
 7. **Other/Filth** (Priority 6) - Plants, debris, neutral pawns
 8. **Colonists/Tamed** (Priority 7) - Player pawns and tamed animals (lowest priority)
 
-### Key Features
-- **Single Target**: Only kills one object per click
+## Key Features
+- **Single Target**: Only kills one object per click (default mode)
+- **Radius Mode**: Optional area-of-effect killing within configurable radius
 - **Smart Selection**: Prioritizes threats over friendlies
-- **Debug Logging**: Shows what was killed and why
-- **Safety**: Colonists are only targeted if nothing else is available
+- **Comprehensive Settings**: Full customization through mod options
+- **Target Type Toggles**: Enable/disable each priority category
+- **Debug Logging**: Shows what was killed and why (toggleable)
+- **Safety**: Colonists are only targeted if enabled and nothing else is available
+- **Distance Prioritization**: Optional preference for closer targets
 - **Compatibility**: Uses reflection to maintain original debug tool permissions
 
 ## Technical Implementation
 
 ### Core Methods
-- `SmartKillUnderCursor()`: Main logic entry point
-- `GetTopKillTarget()`: Finds highest priority target at mouse position
+- `SmartKillUnderCursor()`: Main logic entry point with settings integration
+- `GetTopKillTarget()`: Finds highest priority target at mouse position (single mode)
+- `GetTargetsInRadius()`: Finds all valid targets within radius (radius mode)
+- `KillTargets()`: Handles killing multiple targets with proper cleanup
+- `IsTargetTypeEnabled()`: Checks if target type is enabled in settings
 - `GetKillPriority()`: Determines priority value for any Thing
 - `GetPawnKillPriority()`: Specialized priority logic for pawns
 - `GetKillPriorityName()`: Human-readable priority names for logging
+
+### Settings System
+- `PrioritizedKillToolMod`: Main mod class inheriting from Mod for settings support
+- `PrioritizedKillToolSettings`: ModSettings class with ExposeData for persistence
+- Comprehensive UI with checkboxes, sliders, and help text
+- Real-time settings application (no restart required)
 
 ### Reflection Usage
 The mod uses Harmony's `AccessTools` to temporarily enable `Thing.allowDestroyNonDestroyable` during kill operations, maintaining compatibility with the original debug tool's destructive capabilities.

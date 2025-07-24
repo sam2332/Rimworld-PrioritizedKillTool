@@ -27,6 +27,26 @@ Instead of killing everything under your mouse cursor indiscriminately, this mod
 1. Enable Developer Mode (`F12` or Options menu)
 2. Open Debug Actions (`Ctrl+F12`)
 3. Use the "Kill" tool as normal - it now intelligently prioritizes targets!
+4. **Configure the tool** via Options → Mod Settings → Prioritized Kill Tool
+
+### Mod Settings
+
+The mod includes comprehensive settings accessible through the mod options:
+
+**Target Type Toggles:**
+- Enable/disable each priority category individually
+- Useful for focusing on specific types of cleanup
+- Safety option to disable colonist targeting entirely
+
+**Radius Mode:**
+- Toggle between single-target mode (default) and radius mode
+- Adjustable radius from 0.5 to 10 tiles
+- Kill all valid targets within the specified area
+
+**General Options:**
+- Toggle log messages on/off
+- Prioritize by distance when targets have same priority
+- Reset all settings to defaults
 
 The tool tooltip remains "Kill" but the behavior is completely replaced.
 

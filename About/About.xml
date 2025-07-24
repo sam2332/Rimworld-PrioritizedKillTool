@@ -31,7 +31,7 @@ Features:
 
 Configuration:
 Access mod settings through Options → Mod Settings → Prioritized Kill Tool to customize behavior, enable/disable target types, and configure radius mode.</description>
-
+  <packageId>ProgrammerLily.PrioritizedKillTool</packageId>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>
