@@ -39,5 +39,5 @@ Access mod settings through Options → Mod Settings → Prioritized Kill Tool t
     <li>Ludeon.RimWorld.Biotech</li>
     <li>Ludeon.RimWorld.Anomaly</li>
   </loadAfter>
-  <modVersion>1.0.0</modVersion>
+  <modVersion>1.0.5</modVersion>
 </ModMetaData>
