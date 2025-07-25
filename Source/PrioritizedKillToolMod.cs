@@ -112,12 +112,16 @@ namespace PrioritizedKillTool
             listing.Gap(6f);
 
             listing.CheckboxLabeled("Use Radius Mode", ref useRadiusMode, 
-                "Kill all valid targets within radius instead of just one");
+                "Scan within radius and kill all targets of the highest priority type found");
             
             if (useRadiusMode)
             {
                 listing.Label($"Kill Radius: {killRadius:F1} tiles");
                 killRadius = listing.Slider(killRadius, 0.5f, 10f);
+                listing.Gap(6f);
+                listing.Label("Note: In radius mode, the tool will scan all cells within the radius,");
+                listing.Label("identify the highest priority target type present, and kill ALL targets");
+                listing.Label("of that type only. Lower priority targets will be ignored.");
             }
 
             listing.Gap();
@@ -185,6 +189,9 @@ namespace PrioritizedKillTool
         [HarmonyPrefix]
         public static bool Prefix()
         {
+            // TODO: Add shift key check to use vanilla behavior when shift is held
+            // Currently removed due to Input class not being available in this context
+            
             // Replace the vanilla kill behavior with our smart kill
             SmartKillUnderCursor();
             return false; // Skip original method
@@ -207,11 +214,26 @@ namespace PrioritizedKillTool
             if (settings.useRadiusMode)
             {
                 targets = GetTargetsInRadius(cell, settings.killRadius);
+                
+                if (settings.showLogMessages && targets.Any())
+                {
+                    var priorityName = targets.First() != null ? GetKillPriorityName(targets.First()) : "Unknown";
+                    Log.Message(
+                        $"[Prioritized Kill Tool] Using radius mode at {cell} (radius: {settings.killRadius:F1})"
+                    );
+                }
             }
             else
             {
                 var singleTarget = GetTopKillTarget(cell);
                 targets = singleTarget != null ? new List<Thing> { singleTarget } : new List<Thing>();
+                
+                if (settings.showLogMessages && targets.Any())
+                {
+                    Log.Message(
+                        $"[Prioritized Kill Tool] Using single-target mode at {cell}"
+                    );
+                }
             }
 
             if (targets.Any())
@@ -225,12 +247,12 @@ namespace PrioritizedKillTool
         }
 
         /// <summary>
-        /// Get all valid targets within the specified radius
+        /// Get all valid targets within the specified radius, but only return targets of the highest priority type found
         /// </summary>
         private static List<Thing> GetTargetsInRadius(IntVec3 center, float radius)
         {
             var map = Find.CurrentMap;
-            var targets = new List<Thing>();
+            var allTargets = new List<Thing>();
             var settings = PrioritizedKillToolMod.Settings;
 
             // Get all cells within radius
@@ -244,23 +266,35 @@ namespace PrioritizedKillTool
                     .Where(t => t != null && !t.Destroyed && IsTargetTypeEnabled(t, settings))
                     .ToList();
 
-                targets.AddRange(cellTargets);
+                allTargets.AddRange(cellTargets);
             }
 
-            // Sort by priority, then optionally by distance
+            // If no targets found, return empty list
+            if (!allTargets.Any())
+            {
+                return new List<Thing>();
+            }
+
+            // Find the highest priority (lowest number) among all targets
+            int highestPriority = allTargets.Min(t => GetKillPriority(t));
+
+            // Filter to only include targets with the highest priority
+            var topPriorityTargets = allTargets
+                .Where(t => GetKillPriority(t) == highestPriority)
+                .ToList();
+
+            // Sort the top priority targets, optionally by distance
             if (settings.prioritizeByDistance)
             {
-                return targets
-                    .OrderBy(t => GetKillPriority(t))
-                    .ThenBy(t => t.Position.DistanceTo(center))
+                return topPriorityTargets
+                    .OrderBy(t => t.Position.DistanceTo(center))
                     .ThenBy(t => t.def.defName)
                     .ToList();
             }
             else
             {
-                return targets
-                    .OrderBy(t => GetKillPriority(t))
-                    .ThenBy(t => t.def.defName)
+                return topPriorityTargets
+                    .OrderBy(t => t.def.defName)
                     .ToList();
             }
         }
@@ -277,6 +311,15 @@ namespace PrioritizedKillTool
             try
             {
                 allowDestroyField.SetValue(null, true);
+                
+                // Log summary for radius mode
+                if (settings.useRadiusMode && targets.Count > 1 && settings.showLogMessages)
+                {
+                    var priorityName = targets.Any() ? GetKillPriorityName(targets.First()) : "Unknown";
+                    Log.Message(
+                        $"[Prioritized Kill Tool] Radius mode: Found {targets.Count} targets of type '{priorityName}' (highest priority found)"
+                    );
+                }
                 
                 foreach (var target in targets)
                 {

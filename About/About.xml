@@ -53,5 +53,5 @@ Compatible with all other mods. No performance impact during normal gameplay.
     <li>Ludeon.RimWorld.Biotech</li>
     <li>Ludeon.RimWorld.Anomaly</li>
   </loadAfter>
-  <modVersion>1.0.5</modVersion>
+  <modVersion>1.0.6</modVersion>
 </ModMetaData>

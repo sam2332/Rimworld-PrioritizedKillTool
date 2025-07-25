@@ -10,26 +10,46 @@
 5. **Added comprehensive mod settings system** with GUI
 6. **Implemented radius mode** for area-of-effect killing
 7. **Added target type toggles** for each priority category
+8. **UPDATED: Enhanced radius mode** to only kill highest priority target type found
 
 ### Key Implementation Details - Updated
 - Used `Selector.SelectableObjectsAt()` to get all things at mouse position
 - Implemented 8-tier priority system (0=highest, 7=lowest)
 - Added reflection-based access to `Thing.allowDestroyNonDestroyable` for debug compatibility
 - Added comprehensive logging to show what was killed and why
-- **NEW**: Full mod settings integration with `ModSettings` class
-- **NEW**: Radius mode with configurable area (0.5-10 tiles)
-- **NEW**: Individual target type toggles for fine-grained control
-- **NEW**: Distance-based prioritization option
-- **NEW**: Settings persistence through `ExposeData`
+- Full mod settings integration with `ModSettings` class
+- **ENHANCED**: Radius mode now scans area, identifies highest priority type, and kills ALL of that type only
+- Individual target type toggles for fine-grained control
+- Distance-based prioritization option
+- Settings persistence through `ExposeData`
+
+### Latest Changes (July 24, 2025)
+**Enhanced Radius Mode Logic:**
+- Modified `GetTargetsInRadius()` to scan all targets, find the highest priority (lowest number), then filter to only return targets of that priority level
+- Updated logging to show summary information for radius mode operations
+- Enhanced settings UI to clearly explain the new radius mode behavior
+- **Example**: If radius contains hostile pawns (priority 0) and items (priority 3), only hostile pawns will be killed
+
+**Technical Implementation:**
+```csharp
+// Find highest priority among all targets
+int highestPriority = allTargets.Min(t => GetKillPriority(t));
+
+// Filter to only include targets with highest priority
+var topPriorityTargets = allTargets
+    .Where(t => GetKillPriority(t) == highestPriority)
+    .ToList();
+```
 
 ### Settings Features Added
 - **Target Type Controls**: Toggle each of the 8 priority categories
-- **Radius Mode**: Switch between single-target and area-effect modes
+- **Radius Mode**: Switch between single-target and priority-filtered area-effect modes
 - **Configurable Radius**: Slider for 0.5 to 10 tile radius
 - **Log Toggle**: Enable/disable debug messages
 - **Distance Priority**: Prefer closer targets when priority is tied
 - **Reset to Defaults**: One-click reset button
 - **Safety Warnings**: Clear labeling for dangerous options (colonist killing)
+- **Updated UI**: Better explanation of how radius mode now works
 
 ### Technical Decisions Made
 - **Harmony Prefix Patch**: Completely replaces original method rather than modifying it
